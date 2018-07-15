@@ -1,0 +1,62 @@
+nft(8)
+======
+
+NAME
+----
+nft - Administration tool for packet filtering and classification
+
+
+SYNOPSIS
+--------
+[verse]
+*nft* [ *-n*Nscae ] [ *-I* 'directory' ] [ *-f* 'filename' | *-i* | 'cmd'...]
+*nft* [ *-h* | *--help* ] 
+*nft* [ *-v* | *--version* ]
+
+
+DESCRIPTION
+-----------
+nft is the command line tool used to set up, maintain and inspect pack‐
+et filtering and classification rules in the Linux kernel, in the nfta‐
+bles framework.  The Linux kernel subsystem is known as nf_tables,  and
+'nf' stands for Netfilter.
+
+OPTIONS
+-------
+For a full summary of options, run *nft --help*.
+
+*-h*::
+*--help*::
+	Show help message and all options.
+
+*-v*::
+*--version*::
+	Show version.
+
+*-n*::
+*--numeric*::
+	Show data numerically. When used once (the default behaviour), skip
+	lookup of addresses to symbolic names. Use twice to also show Internet
+	services (port numbers) numerically. Use three times to also show
+	protocols and UIDs/GIDs numerically.
+
+*-s*::
+*--stateless*::
+	Omit stateful information of rules and stateful objects.
+
+*-l*::
+*--literal*::
+	Translate numeric to literal. When used once (the default behav‐
+	iour),  print  services (instead of numerical port numbers). Use
+	twice to perform the IP address to name lookup, this usually re‐
+	quires  network traffic for DNS lookup that slows down the rule‐
+	set listing.
+
+*-c*::
+*--check*::
+	Check commands validity without actually applying the changes.
+
+*-N*::
+*--reversedns*::
+	Translate IP addresses to names. Usually requires network traffic for
+	DNS lookup.
