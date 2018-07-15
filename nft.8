@@ -28,7 +28,7 @@
 .\" * MAIN CONTENT STARTS HERE *
 .\" -----------------------------------------------------------------
 .SH "NAME"
-nft \- Administration tool for packet filtering and classification
+nft \- Administration tool of the nftables framework for packet filtering and classification
 .SH "SYNOPSIS"
 .sp
 .nf
@@ -38,7 +38,7 @@ nft \- Administration tool for packet filtering and classification
 .fi
 .SH "DESCRIPTION"
 .sp
-nft is the command line tool used to set up, maintain and inspect packet filtering and classification rules in the Linux kernel, in the nfta\(hy bles framework\&. The Linux kernel subsystem is known as nf_tables, and \(oqnft\(cq stands for Netfilter\&.
+nft is the command line tool used to set up, maintain and inspect packet filtering and classification rules in the Linux kernel, in the nftables framework\&. The Linux kernel subsystem is known as nf_tables, and \(oqnft\(cq stands for Netfilter\&.
 .SH "OPTIONS"
 .sp
 For a full summary of options, run \fBnft \-\-help\fR\&.
@@ -73,7 +73,34 @@ Translate numeric to literal\&. When used once (the default behav\(hy iour), pri
 Check commands validity without actually applying the changes\&.
 .RE
 .PP
-\fB\-N\fR, \fB\-\-reversedns\fR
+\fB\-a\fR, \fB\-\-handle\fR
 .RS 4
-Translate IP addresses to names\&. Usually requires network traffic for DNS lookup\&.
+Show object handles in output\&.
+.RE
+.PP
+\fB\-e\fR, \fB\-\-echo\fR
+.RS 4
+When inserting items into the ruleset using add, insert or replace commands, print notifications just like nft monitor\&.
+.RE
+.PP
+\fB\-I\fR, \fB\-\-includepath directory\fR
+.RS 4
+Add the directory
+\fIdirectory\fR
+to the list of directories to be searched for included files\&. This op\(hy tion may be specified multiple times\&.
+.RE
+.PP
+\fB\-f\fR, \fB\-\-file \fR\fB\fIfilename\fR\fR
+.RS 4
+Read input from
+\fIfilename\fR\&. If
+\fIfilename\fR
+is \-, read from stdin\&.
+
+nft scripts must start #!/usr/sbin/nft \-f
+.RE
+.PP
+\fB\-i\fR, \fB\-\-interactive\fR
+.RS 4
+Read input from an interactive readline CLI\&. You can use quit to exit, or use the EOF marker, nor\(hy mally this is CTRL\-D\&.
 .RE

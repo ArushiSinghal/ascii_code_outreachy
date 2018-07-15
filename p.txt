@@ -63,21 +63,17 @@ For a full summary of options, run *nft --help*.
 	just like nft monitor.
 
 *-I*::
-* --includepath directory*::
-	Add the directory directory to the list of directories to be searched for included files. This  op‐
+*--includepath directory*::
+	Add the directory 'directory' to the list of directories to be searched for included files. This  op‐
 	tion may be specified multiple times.
 
-       -f, --file filename
-              Read input from filename. If filename is -, read from stdin.
+*-f*::
+*--file 'filename'*::
+	Read input from 'filename'. If 'filename' is -, read from stdin. +
+	nft scripts must start #!/usr/sbin/nft -f
 
-              nft scripts must start #!/usr/sbin/nft -f
+*-i*::
+*--interactive*::
+	Read  input from an interactive readline CLI. You can use quit to exit, or use the EOF marker, nor‐
+	mally this is CTRL-D.
 
-       -i, --interactive
-              Read  input from an interactive readline CLI. You can use quit to exit, or use the EOF marker, nor‐
-              mally this is CTRL-D.
-
-
-*-N*::
-*--reversedns*::
-	Translate IP addresses to names. Usually requires network traffic for
-	DNS lookup.
