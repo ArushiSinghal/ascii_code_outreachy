@@ -3,23 +3,20 @@ nft(8)
 
 NAME
 ----
-nft - Administration tool for packet filtering and classification
+nft - Administration tool of the nftables framework for packet filtering and classification
 
 
 SYNOPSIS
 --------
 [verse]
-*nft* [ *-n*Nscae ] [ *-I* 'directory' ] [ *-f* 'filename' | *-i* | 'cmd'...]
-*nft* [ *-h* | *--help* ] 
-*nft* [ *-v* | *--version* ]
+*nft* [ *-nNscae* ] [ *-I* 'directory' ] [ *-f* 'filename' | *-i* | 'cmd' ...]
+*nft* *-h*
+*nft* *-v*
 
 
 DESCRIPTION
 -----------
-nft is the command line tool used to set up, maintain and inspect pack‐
-et filtering and classification rules in the Linux kernel, in the nfta‐
-bles framework.  The Linux kernel subsystem is known as nf_tables,  and
-'nf' stands for Netfilter.
+nft is the command line tool used to set up, maintain and inspect packet filtering and classification rules in the Linux kernel, in the nftables framework. The Linux kernel subsystem is known as nf_tables,  and `nft' stands for Netfilter.
 
 OPTIONS
 -------
@@ -55,6 +52,30 @@ For a full summary of options, run *nft --help*.
 *-c*::
 *--check*::
 	Check commands validity without actually applying the changes.
+
+*-a*::
+*--handle*::
+	Show object handles in output.
+
+*-e*::
+*--echo*::
+	When  inserting  items  into the ruleset using add, insert or replace commands, print notifications
+	just like nft monitor.
+
+*-I*::
+* --includepath directory*::
+	Add the directory directory to the list of directories to be searched for included files. This  op‐
+	tion may be specified multiple times.
+
+       -f, --file filename
+              Read input from filename. If filename is -, read from stdin.
+
+              nft scripts must start #!/usr/sbin/nft -f
+
+       -i, --interactive
+              Read  input from an interactive readline CLI. You can use quit to exit, or use the EOF marker, nor‐
+              mally this is CTRL-D.
+
 
 *-N*::
 *--reversedns*::
