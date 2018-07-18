@@ -465,3 +465,7 @@ Stateful objects are attached to tables and are identified by an unique name. Th
 *delete*:: Delete the specified object.
 *list*:: Display stateful information the object holds.
 *reset*:: List-and-reset stateful object.
+
+include::sfo-ct.txt[]
+include::sfo-counter.txt[]
+include::sfo-quota.txt[]
