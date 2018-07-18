@@ -1,0 +1,16 @@
+COUNTER
+~~~~~~~
+[verse]
+*counter* [packets bytes]
+
+.Counter specifications
+[options="header"]
+|=================
+|Keyword | Description | Type
+|packets |
+initial count of packets |
+unsigned integer (64 bit)
+|bytes |
+initial count of bytes |
+unsigned integer (64 bit)
+|=================
