@@ -21,8 +21,9 @@ address family (e.g. ip)
 |=================
 
 .defining and assigning ftp helper
-Unlike iptables, helper assignment needs to be performed after the conntrack lookup has completed, for example with the default 0 hook priority.
 ----------------------------------
+Unlike iptables, helper assignment needs to be performed after the conntrack lookup has completed, for example with the default 0 hook priority.
+
 table inet myhelpers {
   ct helper ftp-standard {
      type "ftp" protocol tcp
