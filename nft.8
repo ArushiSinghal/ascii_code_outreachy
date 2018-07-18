@@ -2,12 +2,12 @@
 .\"     Title: nft
 .\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
 .\" Generator: DocBook XSL Stylesheets v1.79.1 <http://docbook.sf.net/>
-.\"      Date: 07/15/2018
+.\"      Date: 07/18/2018
 .\"    Manual: \ \&
 .\"    Source: \ \&
 .\"  Language: English
 .\"
-.TH "NFT" "8" "07/15/2018" "\ \&" "\ \&"
+.TH "NFT" "8" "07/18/2018" "\ \&" "\ \&"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -104,3 +104,1060 @@ nft scripts must start #!/usr/sbin/nft \-f
 .RS 4
 Read input from an interactive readline CLI\&. You can use quit to exit, or use the EOF marker, nor\(hy mally this is CTRL\-D\&.
 .RE
+.SH "INPUT FILE FORMATS"
+.SS "LEXICAL CONVENTIONS"
+.sp
+Input is parsed line\-wise\&. When the last character of a line, just before the newline character, is a non\-quoted backslash (\e), the next line is treated as a continuation\&. Multiple commands on the same line can be separated using a semicolon (;)\&.
+.sp
+A hash sign (#) begins a comment\&. All following characters on the same line are ignored\&.
+.sp
+Identifiers begin with an alphabetic character (a\-z,A\-Z), followed zero or more alphanumeric characters (a\-z,A\-Z,0\-9) and the characters slash (/), backslash (\e), underscore (_) and dot (\&.)\&. Identifiers using different characters or clashing with a keyword need to be enclosed in double quotes (")\&.
+.SS "INCLUDE FILES"
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+\fBinclude\fR \fIfilename\fR
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+Other files can be included by using the \fBinclude\fR statement\&. The directories to be searched for include files can be specified using the \fB\-I\fR/\fB\-\-includepath\fR option\&. You can override this behaviour either by prepending \(oq\&./\(cq to your path to force inclusion of files located in the current working directory (i\&.e\&. relative path) or / for file location expressed as an absolute path\&.
+.sp
+If \fB\-I\fR/\fB\-\-includepath\fR is not specified, then nft relies on the default directory that is specified at compile time\&. You can retrieve this default directory via \fB\-h\fR/\fB\-\-help\fR option\&.
+.sp
+Include statements support the usual shell wildcard symbols (\e*,?,[])\&. Having no matches for an include statement is not an error, if wildcard symbols are used in the include statement\&. This allows having potentially empty include directories for statements like \fBinclude "/etc/firewall/rules/"\fR\&. The wildcard matches are loaded in alphabetical order\&. Files beginning with dot (\&.) are not matched by include statements\&.
+.SS "SYMBOLIC VARIABLES"
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+\fBdefine\fR variable \fIexpr\fR
+\fB$variable\fR
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+Symbolic variables can be defined using the \fBdefine\fR statement\&. Variable references are expressions and can be used initialize other variables\&. The scope of a definition is the current block and all blocks contained within\&.
+.PP
+\fBUsing symbolic variables\fR. 
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+define int_if1 = eth0
+define int_if2 = eth1
+define int_ifs = { $int_if1, $int_if2 }
+
+filter input iif $int_ifs accept
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+.SH "ADDRESS FAMILIES"
+.sp
+Address families determine the type of packets which are processed\&. For each address family the kernel contains so called hooks at specific stages of the packet processing paths, which invoke nftables if rules for these hooks exist\&.
+.TS
+tab(:);
+lt lt
+lt lt
+lt lt
+lt lt
+lt lt
+lt lt.
+T{
+.sp
+ip
+T}:T{
+.sp
+IPv4 address family\&.
+T}
+T{
+.sp
+ip6
+T}:T{
+.sp
+IPv6 address family\&.
+T}
+T{
+.sp
+inet
+T}:T{
+.sp
+Internet (IPv4/IPv6) address family\&.
+T}
+T{
+.sp
+arp
+T}:T{
+.sp
+ARP address family, handling IPv4 ARP packets\&.
+T}
+T{
+.sp
+bridge
+T}:T{
+.sp
+Bridge address family, handling packets which traverse a bridge device\&.
+T}
+T{
+.sp
+netdev
+T}:T{
+.sp
+Netdev address family, handling packets from ingress\&.
+T}
+.TE
+.sp 1
+.sp
+All nftables objects exist in address family specific namespaces, therefore all identifiers include an address family\&. If an identifier is specified without an address family, the \fBip\fR family is used by default\&.
+.SS "IPV4/IPV6/INET ADDRESS FAMILIES"
+.sp
+The IPv4/IPv6/Inet address families handle IPv4, IPv6 or both types of packets\&. They contain five hooks at different packet processing stages in the network stack\&.
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.B Table\ \&1.\ \&IPv4/IPv6/Inet address family hooks
+.TS
+allbox tab(:);
+ltB ltB.
+T{
+Hook
+T}:T{
+Description
+T}
+.T&
+lt lt
+lt lt
+lt lt
+lt lt
+lt lt.
+T{
+.sp
+prerouting
+T}:T{
+.sp
+All packets entering the system are processed by the prerouting hook\&. It is invoked before the routing process and is used for early filtering or changing packet attributes that affect routing\&.
+T}
+T{
+.sp
+input
+T}:T{
+.sp
+Packets delivered to the local system are processed by the input hook\&.
+T}
+T{
+.sp
+forward
+T}:T{
+.sp
+Packets forwarded to a different host are processed by the forward hook\&.
+T}
+T{
+.sp
+output
+T}:T{
+.sp
+Packets sent by local processes are processed by the output hook\&.
+T}
+T{
+.sp
+postrouting
+T}:T{
+.sp
+All packets leaving the system are processed by the postrouting hook\&.
+T}
+.TE
+.sp 1
+.SS "ARP ADDRESS FAMILY"
+.sp
+The ARP address family handles ARP packets received and sent by the system\&. It is commonly used to mangle ARP packets for clustering\&.
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.B Table\ \&2.\ \&ARP address family hooks
+.TS
+allbox tab(:);
+ltB ltB.
+T{
+Hook
+T}:T{
+Description
+T}
+.T&
+lt lt
+lt lt.
+T{
+.sp
+input
+T}:T{
+.sp
+Packets delivered to the local system are processed by the input hook\&.
+T}
+T{
+.sp
+output
+T}:T{
+.sp
+Packets send by the local system are processed by the output hook\&.
+T}
+.TE
+.sp 1
+.SS "BRIDGE ADDRESS FAMILY"
+.sp
+The bridge address family handles ethernet packets traversing bridge devices\&.
+.sp
+The list of supported hooks is identical to IPv4/IPv6/Inet address families above\&.
+.SS "NETDEV ADDRESS FAMILY"
+.sp
+The Netdev address family handles packets from ingress\&.
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.B Table\ \&3.\ \&Netdev address family hooks
+.TS
+allbox tab(:);
+ltB ltB.
+T{
+Hook
+T}:T{
+Description
+T}
+.T&
+lt lt.
+T{
+.sp
+ingress
+T}:T{
+.sp
+All packets entering the system are processed by this hook\&. It is invoked before layer 3 protocol handlers and it can be used for early filtering and policing\&.
+T}
+.TE
+.sp 1
+.SH "RULESET"
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+{list | flush} \fBruleset\fR [\fIfamily\fR]
+{export} [\fBruleset\fR] {\fIformat\fR}
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+The \fBruleset\fR keyword is used to identify the whole set of tables, chains, etc\&. currently in place in kernel\&. The following \fBruleset\fR commands exist:
+.TS
+tab(:);
+lt lt
+lt lt
+lt lt.
+T{
+.sp
+\fBlist\fR
+T}:T{
+.sp
+Print the ruleset in human\-readable format\&.
+T}
+T{
+.sp
+\fBflush\fR
+T}:T{
+.sp
+Clear the whole ruleset\&. Note that unlike iptables, this will remove all tables and whatever they contain, effectively leading to an empty ruleset \- no packet filtering will happen anymore, so the kernel accepts any valid packet it receives\&.
+T}
+T{
+.sp
+\fBexport\fR
+T}:T{
+.sp
+Print the ruleset in machine readable format\&. The mandatory \fIformat\fR parameter may be either \fBxml\fR or \fBjson\fR\&.
+T}
+.TE
+.sp 1
+.sp
+It is possible to limit \fBlist\fR and \fBflush\fR to a specific address family only\&. For a list of valid family names, see the section called \(lqADDRESS FAMILIES\(rq above\&.
+.sp
+Note that contrary to what one might assume, the output generated by \fBexport\fR is not parseable by \fBnft \-f\fR\&. Instead, the output of \fBlist\fR command serves well for that purpose\&.
+.SH "TABLES"
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+{add | create} \fBtable\fR [\fIfamily\fR] \fItable\fR [ {flags \fIflags\fR} ]
+{delete | list | flush} \fBtable\fR [\fIfamily\fR] \fItable\fR
+delete \fBtable\fR [\fIfamily\fR] handle \fIhandle\fR
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+Tables are containers for chains, sets and stateful objects\&. They are identified by their address family and their name\&. The address family must be one of \fBip\fR, \fBip6\fR, \fBinet\fR, \fBarp\fR, \fBbridge\fR, \fBnetdev\fR\&. The \fBinet\fR address family is a dummy family which is used to create hybrid IPv4/IPv6 tables\&. The \fBmeta expression nfproto\fR keyword can be used to test which family (ipv4 or ipv6) context the packet is being processed in\&. When no address family is specified, \fBip\fR is used by default\&. The only difference between add and create is that the former will not return an error if the specified table already exists while \fBcreate\fR will return an error\&.
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.B Table\ \&4.\ \&Table flags
+.TS
+allbox tab(:);
+ltB ltB.
+T{
+Flag
+T}:T{
+Description
+T}
+.T&
+lt lt.
+T{
+.sp
+dormant
+T}:T{
+.sp
+table is not evaluated any more (base chains are unregistered)\&.
+T}
+.TE
+.sp 1
+.PP
+\fBAdd, change, delete a table\fR. 
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+# start nft in interactive mode
+nft \-\-interactive
+
+# create a new table\&.
+create table inet mytable
+
+# add a new base chain: get input packets
+add chain inet mytable myin { type filter hook input priority 0; }
+
+# add a single counter to the chain
+add rule inet mytable myin counter
+
+# disable the table temporarily \-\- rules are not evaluated anymore
+add table inet mytable { flags dormant; }
+
+# make table active again:
+add table inet mytable
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+.TS
+tab(:);
+lt lt
+lt lt
+lt lt
+lt lt.
+T{
+.sp
+\fBadd\fR
+T}:T{
+.sp
+Add a new table for the given family with the given name\&.
+T}
+T{
+.sp
+\fBdelete\fR
+T}:T{
+.sp
+Delete the specified table\&.
+T}
+T{
+.sp
+\fBlist\fR
+T}:T{
+.sp
+List all chains and rules of the specified table\&.
+T}
+T{
+.sp
+\fBflush\fR
+T}:T{
+.sp
+Flush all chains and rules of the specified table\&.
+T}
+.TE
+.sp 1
+.SH "CHAINS"
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+{add | create} \fBchain\fR [\fIfamily\fR] \fItable\fR \fIchain\fR [ { type \fItype\fR hook \fIhook\fR [device \fIdevice\fR] priority \fIpriority\fR ; [policy \fIpolicy\fR ;] }]
+{delete | list | flush} \fBchain\fR [\fIfamily\fR] \fItable\fR \fIchain\fR
+delete \fBchain\fR [\fIfamily\fR] \fItable\fR handle \fIhandle\fR
+rename \fBchain\fR [\fIfamily\fR] \fItable\fR \fIchain\fR \fInewname\fR
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+Chains are containers for rules\&. They exist in two kinds, base chains and regular chains\&. A base chain is an entry point for packets from the networking stack, a regular chain may be used as jump target and is used for better rule organization\&.
+.TS
+tab(:);
+lt lt
+lt lt
+lt lt
+lt lt
+lt lt
+lt lt.
+T{
+.sp
+\fBadd\fR
+T}:T{
+.sp
+Add a new chain in the specified table\&. When a hook and priority value are specified, the chain is created as a base chain and hooked up to the networking stack\&.
+T}
+T{
+.sp
+\fBcreate\fR
+T}:T{
+.sp
+Similar to the \fBadd\fR command, but returns an error if the chain already exists\&.
+T}
+T{
+.sp
+\fBdelete\fR
+T}:T{
+.sp
+Delete the specified chain\&. The chain must not contain any rules or be used as jump target\&.
+T}
+T{
+.sp
+\fBrename\fR
+T}:T{
+.sp
+Rename the specified chain\&.
+T}
+T{
+.sp
+\fBlist\fR
+T}:T{
+.sp
+List all rules of the specified chain\&.
+T}
+T{
+.sp
+\fBflush\fR
+T}:T{
+.sp
+Flush all rules of the specified chain\&.
+T}
+.TE
+.sp 1
+.sp
+For base chains, \fBtype\fR, \fBhook\fR and \fBpriority\fR parameters are mandatory\&.
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.B Table\ \&5.\ \&Supported chain types
+.TS
+allbox tab(:);
+ltB ltB ltB ltB.
+T{
+Type
+T}:T{
+Families
+T}:T{
+Hooks
+T}:T{
+Description
+T}
+.T&
+lt lt lt lt
+lt lt lt lt
+lt lt lt lt.
+T{
+.sp
+filter
+T}:T{
+.sp
+all
+T}:T{
+.sp
+all
+T}:T{
+.sp
+Standard chain type to use in doubt\&.
+T}
+T{
+.sp
+nat
+T}:T{
+.sp
+ip, ip6
+T}:T{
+.sp
+prerouting, input, output, postrouting
+T}:T{
+.sp
+Chains of this type perform Native Address Translation based on conntrack entries\&. Only the first packet of a connection actually traverses this chain \- its rules usually define details of the created conntrack entry (NAT statements for instance)\&.
+T}
+T{
+.sp
+route
+T}:T{
+.sp
+ip, ip6
+T}:T{
+.sp
+output
+T}:T{
+.sp
+If a packet has traversed a chain of this type and is about to be accepted, a new route lookup is performed if relevant parts of the IP header have changed\&. This allows to e\&.g\&. implement policy routing selectors in nftables\&.
+T}
+.TE
+.sp 1
+.sp
+Apart from the special cases illustrated above (e\&.g\&. \fBnat\fR type not supporting \fBforward\fR hook or \fBroute\fR type only supporting \fBoutput\fR hook), there are two further quirks worth noticing:
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+netdev family supports merely a single combination, namely
+\fBfilter\fR
+type and
+\fBingress\fR
+hook\&. Base chains in this family also require the
+\fBdevice\fR
+parameter to be present since they exist per incoming interface only\&.
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+arp family supports only
+\fBinput\fR
+and
+\fBoutput\fR
+hooks, both in chains of type
+\fBfilter\fR\&.
+.RE
+.sp
+The \fBpriority\fR parameter accepts a signed integer value which specifies the order in which chains with same \fBhook\fR value are traversed\&. The ordering is ascending, i\&.e\&. lower priority values have precedence over higher ones\&.
+.sp
+Base chains also allow to set the chain\(cqs \fBpolicy\fR, i\&.e\&. what happens to packets not explicitly accepted or refused in contained rules\&. Supported policy values are \fBaccept\fR (which is the default) or \fBdrop\fR\&.
+.SH "RULES"
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+[add | insert] \fBrule\fR [\fIfamily\fR] \fItable\fR \fIchain\fR [ {handle | position} \fIhandle\fR | index \fIindex\fR ] \fIstatement\fR\&...
+replace \fBrule\fR [\fIfamily\fR] \fItable\fR \fIchain\fR handle \fIhandle\fR \fIstatement\fR\&...
+delete \fBrule\fR [\fIfamily\fR] \fItable\fR \fIchain\fR handle \fIhandle\fR
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+Rules are added to chain in the given table\&. If the family is not specified, the ip family is used\&. Rules are constructed from two kinds of components according to a set of grammatical rules: ex\(hy pressions and statements\&.
+.sp
+The add and insert commands support an optional location specifier, which is either a \fIhandle\fR of an existing rule or an \fIindex\fR (starting at zero)\&. Internally, rule locations are always identified by \fIhandle\fR and the translation from \fIindex\fR happens in userspace\&. This has two potential implications in case a concurrent ruleset change happens after the translation was done: The effective rule index might change if a rule was inserted or deleted before the referred one\&. If the referred rule was deleted, the command is rejected by the kernel just as if an invalid \fIhandle\fR was given\&.
+.PP
+\fBadd\fR
+.RS 4
+Add a new rule described by the list of statements\&. The rule is appended to the given chain unless a position is specified, in which case the rule is appended to the rule given by the
+\fIhandle\fR\&. The alternative name position is deprecated and should not be used anymore\&.
+.RE
+.PP
+\fBinsert\fR
+.RS 4
+Similar to the
+\fBadd\fR
+command, but the rule is prepended to the beginning of the chain or before the rule at the given position\&.
+.RE
+.PP
+\fBreplace\fR
+.RS 4
+Similar to the add command, but the rule replaces the specified rule\&.
+.RE
+.PP
+\fBdelete\fR
+.RS 4
+Delete the specified rule\&.
+.RE
+.PP
+\fBadd a rule to ip table input chain\fR. 
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+nft add rule filter output ip daddr 192\&.168\&.0\&.0/24 accept # \*(Aqip filter\*(Aq is assumed
+# same command, slightly more verbose
+nft add rule ip filter output ip daddr 192\&.168\&.0\&.0/24 accept
+.fi
+.if n \{\
+.RE
+.\}
+.PP
+\fBdelete rule from inet table\fR. 
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+# nft \-a list ruleset
+table inet filter {
+        chain input {
+                type filter hook input priority 0; policy accept;
+                ct state established,related accept # handle 4
+                ip saddr 10\&.1\&.1\&.1 tcp dport ssh accept # handle 5
+          \&.\&.\&.
+# delete the rule with handle 5
+# nft delete rule inet filter input handle 5
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+.SH "SETS"
+.sp
+nftables offers two kinds of set concepts\&. Anonymous sets are sets that have no specific name\&. The set members are enclosed in curly braces, with commas to separate elements when creating the rule the set is used in\&. Once that rule is removed, the set is removed as well\&. They cannot be updated, i\&.e\&. once an anonymous set is declared it cannot be changed anymore except by removing/altering the rule that uses the anonymous set\&.
+.PP
+\fBUsing anonymous sets to accept particular subnets and ports\fR. 
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+nft add rule filter input ip saddr { 10\&.0\&.0\&.0/8, 192\&.168\&.0\&.0/16 } tcp dport { 22, 443 } accept
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+Named sets are sets that need to be defined first before they can be referenced in rules\&. Unlike anonymous sets, elements can be added to or removed from a named set at any time\&. Sets are referenced from rules using an @ prefixed to the sets name\&.
+.PP
+\fBUsing named sets to accept addresses and ports\fR. 
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+nft add rule filter input ip saddr @allowed_hosts tcp dport @allowed_ports accept
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+The sets allowed_hosts and allowed_ports need to be created first\&. The next section describes nft set syntax in more detail\&.
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+add \fBset\fR [\fIfamily\fR] \fItable\fR \fIset\fR { type \fItype\fR ; [flags \fIflags\fR ;] [timeout \fItimeout\fR ;] [gc\-interval \fIgc\-interval\fR ;] [elements = { \fIelement\fR[,\&...]
+} ;] [size size ;] [policy policy ;] [auto\-merge auto\-merge ;] }
+{delete | list | flush} \fBset\fR [\fIfamily\fR] \fItable\fR \fIset\fR
+delete \fBset\fR [\fIfamily\fR] \fItable\fR handle \fIhandle\fR
+{add | delete} \fBelement\fR [\fIfamily\fR] \fItable\fR \fIset\fR { \fIelement\fR[,\&...] }
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+Sets are elements containers of an user\-defined data type, they are uniquely identified by an user\-defined name and attached to tables\&. Their behaviour can be tuned with the flags that can be specified at set creation time\&.
+.TS
+tab(:);
+lt lt
+lt lt
+lt lt
+lt lt
+lt lt
+lt lt.
+T{
+.sp
+\fBadd\fR
+T}:T{
+.sp
+Add a new set in the specified table\&. See the Set specification table below for more information about how to specify a sets properties\&.
+T}
+T{
+.sp
+\fBdelete\fR
+T}:T{
+.sp
+Delete the specified set\&.
+T}
+T{
+.sp
+\fBlist\fR
+T}:T{
+.sp
+Display the elements in the specified set\&.
+T}
+T{
+.sp
+\fBflush\fR
+T}:T{
+.sp
+Remove all elements from the specified set\&.
+T}
+T{
+.sp
+\fBadd element\fR
+T}:T{
+.sp
+Comma\-separated list of elements to add into the specified set\&.
+T}
+T{
+.sp
+\fBdelete element\fR
+T}:T{
+.sp
+Comma\-separated list of elements to delete from the specified set\&.
+T}
+.TE
+.sp 1
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.B Table\ \&6.\ \&Set specifications
+.TS
+allbox tab(:);
+ltB ltB ltB.
+T{
+Keyword
+T}:T{
+Description
+T}:T{
+Type
+T}
+.T&
+lt lt lt
+lt lt lt
+lt lt lt
+lt lt lt
+lt lt lt
+lt lt lt
+lt lt lt
+lt lt lt.
+T{
+.sp
+type
+T}:T{
+.sp
+data type of set elements
+T}:T{
+.sp
+string: ipv4_addr, ipv6_addr, ether_addr, inet_proto, inet_service, mark
+T}
+T{
+.sp
+flags
+T}:T{
+.sp
+set flags
+T}:T{
+.sp
+string: constant, dynamic, interval, timeout
+T}
+T{
+.sp
+timeout
+T}:T{
+.sp
+time an element stays in the set, mandatory if set is added to from the packet path (ruleset)\&.
+T}:T{
+.sp
+string, decimal followed by unit\&. Units are: d, h, m, s
+T}
+T{
+.sp
+gc\-interval
+T}:T{
+.sp
+garbage collection interval, only available when timeout or flag timeout are active
+T}:T{
+.sp
+string, decimal followed by unit\&. Units are: d, h, m, s
+T}
+T{
+.sp
+elements
+T}:T{
+.sp
+elements contained by the set
+T}:T{
+.sp
+set data type
+T}
+T{
+.sp
+size
+T}:T{
+.sp
+maximun number of elements in the set, mandatory if set is added to from the packet path (ruleset)\&.
+T}:T{
+.sp
+unsigned integer (64 bit)
+T}
+T{
+.sp
+policy
+T}:T{
+.sp
+set policy
+T}:T{
+.sp
+string: performance [default], memory
+T}
+T{
+.sp
+auto\-merge
+T}:T{
+.sp
+automatic merge of adjacent/overlapping set elements (only for interval sets)
+T}:T{
+.sp
+T}
+.TE
+.sp 1
+.SH "MAPS"
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+add \fBmap\fR [\fIfamily\fR] \fItable\fR \fImap\fR { type \fItype\fR [flags \fIflags\fR ;] [elements = {\fIelements\fR[,\&...] } ;] [size \fIsize\fR ;] [policy \fIpolicy\fR ;] }
+{delete | list | flush} \fBmap\fR [\fIfamily\fR] \fItable\fR \fImap\fR
+{add | delete} \fBelement\fR [\fIfamily\fR] \fItable\fR \fImap\fR { elements = { \fIelements\fR[,\&...] } ; }
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+Maps store data based on some specific key used as input, they are uniquely identified by an user\-defined name and attached to tables\&.
+.TS
+tab(:);
+lt lt
+lt lt
+lt lt
+lt lt
+lt lt
+lt lt.
+T{
+.sp
+\fBadd\fR
+T}:T{
+.sp
+Add a new map in the specified table\&.
+T}
+T{
+.sp
+\fBdelete\fR
+T}:T{
+.sp
+Delete the specified map\&.
+T}
+T{
+.sp
+\fBlist\fR
+T}:T{
+.sp
+Display the elements in the specified map\&.
+T}
+T{
+.sp
+\fBflush\fR
+T}:T{
+.sp
+Remove all elements from the specified map\&.
+T}
+T{
+.sp
+\fBadd element\fR
+T}:T{
+.sp
+Comma\-separated list of elements to add into the specified map\&.
+T}
+T{
+.sp
+\fBdelete element\fR
+T}:T{
+.sp
+Comma\-separated list of element keys to delete from the specified map\&.
+T}
+.TE
+.sp 1
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.B Table\ \&7.\ \&Map specifications
+.TS
+allbox tab(:);
+ltB ltB ltB.
+T{
+Keyword
+T}:T{
+Description
+T}:T{
+Type
+T}
+.T&
+lt lt lt
+lt lt lt
+lt lt lt
+lt lt lt
+lt lt lt.
+T{
+.sp
+type
+T}:T{
+.sp
+data type of map elements
+T}:T{
+.sp
+string \(oq:\(cq string: ipv4_addr, ipv6_addr, ether_addr, inet_proto, inet_service, mark, counter, quota\&. Counter and quota can\(cqt be used as keys
+T}
+T{
+.sp
+flags
+T}:T{
+.sp
+map flags
+T}:T{
+.sp
+string: constant, interval
+T}
+T{
+.sp
+elements
+T}:T{
+.sp
+elements contained by the map
+T}:T{
+.sp
+map data type
+T}
+T{
+.sp
+size
+T}:T{
+.sp
+maximun number of elements in the map
+T}:T{
+.sp
+unsigned integer (64 bit)
+T}
+T{
+.sp
+policy
+T}:T{
+.sp
+map policy
+T}:T{
+.sp
+string: performance [default], memory
+T}
+.TE
+.sp 1
+.sp
+FLOWTABLES
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+[verse]
+{add | create} *flowtable* [\*(Aqfamily\*(Aq] \*(Aqtable\*(Aq \*(Aqflowtable\*(Aq { hook \*(Aqhook\*(Aq priority \*(Aqpriority\*(Aq ; devices = { \*(Aqdevice\*(Aq[,\&.\&.\&.] } ; }
+{delete | list} *flowtable* [\*(Aqfamily\*(Aq] \*(Aqtable\*(Aq \*(Aqflowtable\*(Aq
+
+Flowtables allow you to accelerate packet forwarding in software\&. Flowtables entries are represented through a tuple that is composed of the input interface, source and destination address, source and destination port; and layer 3/4 protocols\&. Each entry also caches the destination interface and the gateway address \- to update the destination link\-layer address \- to forward  packets\&. The ttl and hoplimit fields are also decremented\&. Hence, flowtables provides an alternative path that allow packets to bypass the classic forwarding path\&. Flowtables reside in the ingress hook, that is located before the prerouting hook\&. You can select what flows you want to offload through the flow offload expression from the forward chain\&. Flowtables are identified by their address family and their name\&. The address family must be one of ip, ip6, inet\&. The inet address family is a dummy family which is used to create hybrid IPv4/IPv6 tables\&.  When no address family is specified, ip is used by default\&.
+
+[horizontal]
+*add*:: Add a new flowtable for the given family with the given name\&.
+*delete*:: Delete the specified flowtable\&.
+*list*:: List all flowtables\&.
+
+STATEFUL OBJECTS
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+{add | delete | list | reset} \fBtype\fR [\fIfamily\fR] {\fItable\fR} {\fIobject\fR}
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+Stateful objects are attached to tables and are identified by an unique name\&. They group stateful information from rules, to reference them in rules the keywords "type name" are used e\&.g\&. "counter name"\&.
+.TS
+tab(:);
+lt lt
+lt lt
+lt lt
+lt lt.
+T{
+.sp
+\fBadd\fR
+T}:T{
+.sp
+Add a new stateful object in the specified table\&.
+T}
+T{
+.sp
+\fBdelete\fR
+T}:T{
+.sp
+Delete the specified object\&.
+T}
+T{
+.sp
+\fBlist\fR
+T}:T{
+.sp
+Display stateful information the object holds\&.
+T}
+T{
+.sp
+\fBreset\fR
+T}:T{
+.sp
+List\-and\-reset stateful object\&.
+T}
+.TE
+.sp 1
