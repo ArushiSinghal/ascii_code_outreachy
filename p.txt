@@ -439,7 +439,7 @@ string: performance [default], memory
 
 
 FLOWTABLES
------
+-----------
 [verse]
 {add | create} *flowtable* ['family'] 'table' 'flowtable' { hook 'hook' priority 'priority' ; devices = { 'device'[,...] } ; }
 {delete | list} *flowtable* ['family'] 'table' 'flowtable'
@@ -451,10 +451,12 @@ Flowtables allow you to accelerate packet forwarding in software. Flowtables ent
 *delete*:: Delete the specified flowtable.
 *list*:: List all flowtables.
 
+
 STATEFUL OBJECTS
 ----------------
 [verse]
-{add | delete | list | reset} *type* ['family'] {'table'} {'object'}
+{add | delete | list | reset} type ['family'] 'table' 'object'
+delete type ['family'] 'table' handle 'handle'
 
 Stateful objects are attached to tables and are identified by an unique name. They group stateful information from rules, to reference them in rules the keywords "type name" are used e.g. "counter name".
 
