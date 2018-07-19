@@ -1,0 +1,18 @@
+STRING TYPE
+~~~~~~~~~~~~
+[options="header"]
+|==================
+|Name | Keyword | Size | Base type
+|Link layer address |
+lladdr|
+variable |
+integer
+|===================
+
+The link layer address type is used for link layer addresses. Link layer addresses are specified as a variable amount of groups of two hexadecimal digits separated using colons (:).
+
+.Link layer address specification
+----------------------
+# Ethernet destination MAC address
+filter input ether daddr 20:c9:d0:43:12:d9
+----------------------------

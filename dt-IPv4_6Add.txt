@@ -1,0 +1,44 @@
+IPV4 ADDRESS TYPE
+~~~~~~~~~~~~
+[options="header"]
+|==================
+|Name | Keyword | Size | Base type
+|IPV4 address|
+ipv4_addr|
+32 bit|
+integer
+|===================
+
+The IPv4 address type is used for IPv4 addresses. Addresses are  specified  in either dotted decimal, dotted hexadecimal, dotted octal, decimal, hexadecimal, octal notation or as a host name. A host name will be resolved using the standard system resolver.
+
+.IPv4 address specification
+----------------------
+# dotted decimal notation
+filter output ip daddr 127.0.0.1
+
+# host name
+filter output ip daddr localhost
+----------------------------
+
+IPV6 ADDRESS TYPE
+~~~~~~~~~~~~~~~~~
+[options="header"]
+|==================
+|Name | Keyword | Size | Base type
+|IPv6 address|
+ipv6_addr|
+128 bit|
+integer
+|===================
+
+The IPv6 address type is used for IPv6 addresses.  Addresses are specified as a host name or as hexadecimal halfwords separated by colons. Addresses might be enclosed in square brackets ("[]") to differentiate them from port numbers.
+
+.IPv6 address specificationIPv6 address specification with bracket notation
+----------------------
+# abbreviated loopback address
+filter output ip6 daddr ::1
+
+# without [] the port number (22) would be parsed as part of ipv6 address
+ip6 nat prerouting tcp dport 2222 dnat to [1ce::d0]:22
+----------------------------
+

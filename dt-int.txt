@@ -1,0 +1,12 @@
+INTEGER TYPE
+~~~~~~~~~~~
+[options="header"]
+|==================
+|Name | Keyword | Size | Base type
+|Integer |
+integer |
+variable |
+-
+|===================
+
+The integer type is used for numeric values. It may be specified as decimal, hexadecimal or octal number. The integer type doesn't have a fixed size, its size is determined by the expression for which it is used.

@@ -1,0 +1,12 @@
+BITMASK TYPE
+~~~~~~~~~~~~
+[options="header"]
+|==================
+|Name | Keyword | Size | Base type
+|Bitmask |
+bitmask |
+variable |
+integer
+|===================
+
+The bitmask type (bitmask) is used for bitmasks.
