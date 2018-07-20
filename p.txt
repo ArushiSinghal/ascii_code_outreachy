@@ -508,3 +508,54 @@ Data  types  determine the size, parsing and representation of symbolic values a
 Types may be derived from lower order types, f.i. the IPv4 address type is derived from the integer type, meaning an IPv4 address can also be specified as an integer value. +
 
 In certain contexts (set and map definitions) it is necessary to explicitly specify a data type. Each type has a name which is used for this.
+
+ERROR REPORTING
+---------------
+When an error is detected, nft shows the line(s) containing the  error, the position of the erroneous parts in the input stream and marks up the erroneous parts using carets (^). If the error results from the combination of two expressions or statements, the part imposing the constraints which are violated is marked using tildes (~). +
+
+For errors returned by the kernel, nft can't detect which parts of the input caused the error and the entire command is marked.
+
+.Error caused by single incorrect expression
+--------------------------------------------
+<cmdline>:1:19-22: Error: Interface does not exist
+filter output oif eth0
+		  ^^^^
+--------------------------------------------
+
+.Error caused by invalid combination of two expressions
+-------------------------------------------------------
+<cmdline>:1:28-36: Error: Right hand side of relational expression (==) must be constant
+filter output tcp dport == tcp dport
+                        ~~ ^^^^^^^^^
+-------------------------------------------------------
+
+.Error returned by the kernel
+-----------------------------
+<cmdline>:0:0-23: Error: Could not process rule: Operation not permitted
+filter output oif wlan0
+       ^^^^^^^^^^^^^^^^^^^^^^^
+---------------------------------
+
+
+EXIT STATUS
+-----------
+On success, nft exits with a status of 0. Unspecified errors cause it to exit with a status of 1, memory allocation errors with a status of 2, unable to open Netlink socket with 3.
+
+SEE ALSO
+--------
+[verse]
+iptables(8), ip6tables(8), arptables(8), ebtables(8), ip(8), tc(8)
+
+There is an official wiki at: https://wiki.nftables.org
+
+AUTHORS
+-------
+nftables  was  written  by Patrick McHardy and Pablo Neira Ayuso, among many other contributors from the Netfilter community.
+
+COPYRIGHT
+---------
+Copyright © 2008-2014 Patrick McHardy <kaber@trash.net> Copyright © 2013-2016 Pablo Neira Ayuso <pablo@netfilter.org> +
+
+nftables is free software; you can redistribute it and/or modify it under  the terms of the GNU General Public License version 2 as published by the Free Software Foundation. +
+
+This documentation is licensed under the terms of the Creative Commons Attribution-ShareAlike 4.0 license, CC BY-SA 4.0 ⟨http://creativecommons.org/licenses/by-sa/4.0/⟩.
