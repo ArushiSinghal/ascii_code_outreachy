@@ -1,0 +1,163 @@
+ICMP TYPE TYPE
+~~~~~~~~~~~~~~
+[options="header"]
+|==================
+|Name | Keyword | Size | Base type
+|ICMP Type |
+icmp_type |
+8 bit |
+integer
+|===================
+The ICMP Type type is used to conveniently specify the ICMP header's type field.
+
+.Keywords may be used when specifying the ICMP type
+[options="header"]
+|==================
+|Keyword | Value
+|echo-reply |
+0
+|destination-unreachable |
+3
+|source-quench|
+4
+|redirect|
+5
+|echo-request|
+8
+|router-advertisement|
+9
+|router-solicitation|
+10
+|time-exceeded|
+11
+|parameter-problem|
+12
+|timestamp-request|
+13
+|timestamp-reply|
+14
+|info-request|
+15
+|info-reply|
+p16
+|address-mask-request|
+17
+|address-mask-reply|
+18
+|===================
+
+.ICMP Type specification
+------------------------
+# match ping packets
+filter output icmp type { echo-request, echo-reply }
+------------------------
+
+ICMP CODE TYPE
+~~~~~~~~~~~~~~
+[options="header"]
+|==================
+|Name | Keyword | Size | Base type
+|ICMP Type |
+icmp_type |
+8 bit |
+integer
+|===================
+
+The ICMP Code type is used to conveniently specify  the  ICMP  header's code field.
+
+.Keywords may be used when specifying the ICMP type
+[options="header"]
+|==================
+|Keyword | Value
+|net-unreachable |
+0
+|host-unreachable |
+1
+|prot-unreachable|
+2
+|port-unreachable|
+3
+|net-prohibited|
+9
+|host-prohibited|
+10
+|admin-prohibited|
+13
+|===================
+
+ICMPV6 TYPE TYPE
+~~~~~~~~~~~~~~~~
+[options="header"]
+|==================
+|Name | Keyword | Size | Base type
+|ICMPv6 Type |
+icmpv6_type |
+8 bit |
+integer
+|===================
+
+The  ICMPv6  Type type is used to conveniently specify the ICMPv6 header's type field.
+
+.keywords may be used when specifying the ICMPv6 type:
+[options="header"]
+|==================
+|Keyword | Value
+|destination-unreachable |
+1
+|packet-too-big|
+2
+|time-exceeded|
+3
+|parameter-problem|
+4
+|echo-request|
+128
+|echo-reply|
+129
+|mld-listener-query|
+130
+|mld-listener-report|
+131
+|mld-listener-done |
+132
+|mld-listener-reduction|
+132
+|nd-router-solicit |
+133
+|nd-router-advert|
+134
+|nd-neighbor-solicit|
+135
+|nd-neighbor-advert|
+136
+|nd-redirect|
+137
+|router-renumbering|
+138
+|ind-neighbor-solicit|
+141
+|ind-neighbor-advert|
+142
+|mld2-listener-report|
+143
+|===================
+
+.ICMPv6 Type specification
+--------------------------
+# match ICMPv6 ping packets
+filter output icmpv6 type { echo-request, echo-reply }
+--------------------------
+
+ICMPV6 CODE TYPE
+~~~~~~~~~~~~~~~~
+[options="header"]
+|==================
+|Name | Keyword | Size | Base type
+|ICMPv6 Code |
+icmpv6_type |
+8 bit |
+integer
+|===================
+
+The ICMPv6 Code type is used to conveniently specify the  ICMPv6  header's code field.
+

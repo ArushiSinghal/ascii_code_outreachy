@@ -41,4 +41,3 @@ filter output ip6 daddr ::1
 # without [] the port number (22) would be parsed as part of ipv6 address
 ip6 nat prerouting tcp dport 2222 dnat to [1ce::d0]:22
 ----------------------------
-
