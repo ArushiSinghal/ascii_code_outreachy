@@ -1,0 +1,88 @@
+META EXPRESSIONS
+~~~~~~~~~~~~~~~~
+[verse]
+meta {length | nfproto | l4proto | protocol | priority}
+[meta] {mark | iif | iifname | iiftype | oif | oifname | oiftype |
+skuid | skgid | nftrace | rtclassid | ibrname | obrname | pkttype | cpu
+| iifgroup | oifgroup | cgroup | random | secpath}
+
+A meta expression refers to meta data associated with a packet.
+
+There are two types of meta expressions: unqualified and qualified meta expressions. Qualified meta expressions require the meta keyword before the meta key, unqualified meta expressions can be specified by using the meta key directly or as qualified  meta  expressions. Meta l4proto is useful to match a particular transport protocol that is part of either an IPv4 or IPv6 packet. It will also skip any IPv6 extension headers present in an IPv6 packet.
+
+.Meta expression types
+[options="header"]
+|==================
+|Keyword | Description | Type
+|length|
+Length of the packet in bytes|
+integer (32 bit) |
+|nfproto|
+real hook  protocol family, useful only in inet table|
+integer (32 bit) |
+|l4proto|
+layer 4 protocol, skips ipv6 extension headers|
+integer (32 bit)
+|protocol|
+EtherType protocol value|
+ether_type|
+|priority|
+TC packet priority|
+tc_handle|
+|mark|
+Packet mark |
+mark |
+|iif|
+Input interface index |
+iface_index |
+|iifname|
+Input interface name |
+ifname |
+|iiftype|
+Input interface type|
+iface_itype|
+|oif|
+Output interface index|
+iface_index|
+|oifname|
+Output interface name|
+ifname|
+|oiftype|
+Outout interface hardware type|
+iface_type|
+|skuid|
+UID  associated  with  originating socket|
+uid|
+|skgid|
+GID  associated  with  originating socket|
+gid|
+|rtlclassid|
+Routing realm|
+realm|
+|ibrname|
+Input bridge interface name|
+ifname|
+|obrname|
+Output bridge interface name|
+ifname|
+|pkttype|
+packet type|
+pkt_type|
+|cpu|
+cpu number processing the packet|
+integer (32 bits)|
+|iifgroup|
+incoming device group|
+devgroup|
+|oifgroup|
+outgoing device group|
+devgroup|
+|cgroup|
+control group id |
+integer (32 bit) |
+|random|
+pseudo-random number|
+integer (32 bits) |
+|secpath|
+boolean|
+boolean (1 bit)|
