@@ -212,7 +212,7 @@ integer (32 bit)
 ID of echo request/response |
 integer (16 bit)
 |sequence|
-sequence   number of echo request/response|
+sequence number of echo request/response|
 integer (16 bit)
 |max-delay|
 maximum response delay of MLD queries|
@@ -242,7 +242,7 @@ Acknowledgement number |
 integer (32 bit)
 |doff|
 Data offset |
-integer (4 bit) FIXME scaling |
+integer (4 bit) FIXME scaling
 |reserved|
 Reserved area |
 integer (4 bit)
@@ -254,7 +254,7 @@ Window|
 integer (16 bit)
 |checksum|
 checksum|
-integer (16 bit) 
+integer (16 bit)
 |urgptr|
 Urgent pointer|
 integer (16 bit)
@@ -422,6 +422,7 @@ Link layer, for example the Ethernet header
 Network header, for example IPv4 or IPv6
 |th|
 Transport Header, for example TCP
+|==============================
 
 .Matching destination port of both UDP and TCP
 ----------------------------------------------
@@ -489,19 +490,19 @@ kind, length, count
 TCP SACK permitted │ 
 kind, length
 |sack│
-TCP Selective Acknowledgement (alias of block 0)
+TCP Selective Acknowledgement (alias of block 0) |
 kind, length, left, right
 |sack0│
-TCP Selective Acknowledgement (block 0)
+TCP Selective Acknowledgement (block 0) |
 kind, length, left, right
 |sack1│
-TCP Selective Acknowledgement (block 1)
+TCP Selective Acknowledgement (block 1) |
 kind, length, left, right
 |sack2│
-TCP Selective Acknowledgement (block 2)
+TCP Selective Acknowledgement (block 2) |
 kind, length, left, right
 |sack3│
-TCP Selective Acknowledgement (block 3)
+TCP Selective Acknowledgement (block 3) |
 kind, length, left, right
 |timestamp│
 TCP Timestamps |
@@ -571,6 +572,7 @@ Layer 4 protocol source for the given direction|
 integer (16 bit)
 |proto-dst|
 Layer  4  protocol destination for the given direction |
+integer (16 bit)
 |packets|
 packet count seen in the given direction or sum of original and reply |
 integer (64 bit)

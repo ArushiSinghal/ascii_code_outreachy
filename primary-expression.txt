@@ -169,6 +169,7 @@ string
 |type|
 Address type |
 fib_addrtype
+|=======================
 
 .Using fib expressions
 ----------------------
