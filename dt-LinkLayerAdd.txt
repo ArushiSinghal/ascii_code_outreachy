@@ -1,4 +1,4 @@
-STRING TYPE
+LINK LAYER ADDRESS TYPE
 ~~~~~~~~~~~~
 [options="header"]
 |==================
