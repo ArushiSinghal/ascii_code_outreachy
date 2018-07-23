@@ -161,3 +161,154 @@ integer
 
 The ICMPv6 Code type is used to conveniently specify the  ICMPv6  header's code field.
 
+.keywords may be used when specifying the ICMPv6 code:
+[options="header"]
+|==================
+|Keyword │Value |
+|no-route|
+0
+|admin-prohibited|
+1
+|addr-unreachable|
+3
+|port-unreachable|
+4
+|policy-fail|
+5
+|reject-route|
+6
+|==================
+
+ICMPVX CODE TYPE
+~~~~~~~~~~~~~~~~
+[options="header"]
+|==================
+|Name | Keyword | Size | Base type
+|ICMPvX Code |
+icmpv6_type |
+8 bit |
+integer
+|===================
+
+The ICMPvX Code type abstraction is a set of values which overlap between ICMP and ICMPv6 Code types to be used from the inet family.
+
+.keywords may be used when specifying the ICMPvX code
+[options="header"]
+|==================
+|Keyword │Value |
+|no-route|
+0
+|port-unreachable|
+1
+|host-unreachable|
+2
+|admin-prohibited|
+3
+|=================
+
+CONNTRACK TYPES
+~~~~~~~~~~~~~~~
+
+.overview of types used in ct expression and statement
+[options="header"]
+|==================
+|Name │Keyword |Size |Base type
+|conntrack state|
+ct_state|
+4 byte|
+bitmask 
+|conntrack direction|
+ct_dir |
+8 bit|
+integer
+|conntrack status|
+ct_status|
+4 byte|
+bitmask
+|conntrack event bits|
+ct_events |
+4 byte |
+bitmask
+|conntrack label|
+ct_label |
+128 bit|
+bitmask
+|=================
+
+For each of the types above, keywords are available for convenience:
+
+.conntrack state (ct_state)
+[options="header"]
+|==================
+|Keyword| Value
+|invalid|
+1
+|established|
+2
+|related|
+4
+|new|
+8
+|untracked|
+64
+|================
+
+.conntrack direction (ct_dir)
+[options="header"]
+|==================
+|Keyword| Value
+|original|
+0
+|reply|
+1
+|================
+
+.conntrack status (ct_status)
+[options="header"]
+|==================
+|Keyword| Value
+|expected|
+1
+|seen-reply|
+1
+|assured|
+4
+|confirmed|
+8
+|snat|
+16
+|dnat|
+32
+|dying|
+512
+|================
+
+.conntrack event bits (ct_event)
+[options="header"]
+|==================
+|Keyword| Value
+|new|
+1
+|related|
+2
+|destroy|
+4
+|reply|
+8
+|assured|
+16
+|protoinfo|
+32
+|helper|
+64
+|mark|
+128
+|seqadj|
+256
+|secmark|
+512
+|label|
+1024
+|==================
+
+Possible keywords for conntrack label type (ct_label) are read at runtime from /etc/connlabel.conf. 
