@@ -509,6 +509,60 @@ Types may be derived from lower order types, f.i. the IPv4 address type is deriv
 
 In certain contexts (set and map definitions) it is necessary to explicitly specify a data type. Each type has a name which is used for this.
 
+PRIMARY EXPRESSIONS
+-------------------
+The  lowest  order expression is a primary expression, representing either a constant or a single datum from a packet's payload, meta data or a stateful module.
+
+PAYLOAD EXPRESSIONS
+-------------------
+Payload expressions refer to data from the packet's payload.
+
+ADDITIONAL COMMANDS
+-------------------
+These are some additional commands included in nft.
+
+STATEMENTS
+----------
+Statements represent actions to be performed. They can alter control flow (return, jump to a different chain, accept or drop the packet) or can perform actions, such as logging, rejecting a packet, etc. +
+
+Statements  exist in two kinds. Terminal statements unconditionally terminate evaluation of the current rule, non-terminal statements either only conditionally or never terminate evaluation of the current rule, in other words,  they  are  passive from the ruleset evaluation perspective. There can be an arbitrary amount of non-terminal statements in a rule, but only a single terminal statement as the final statement.
+
+
+MONITOR
+~~~~~~~~
+The monitor command allows you to listen to Netlink events produced by the nf_tables  subsystem, related to creation and deletion of objects. When they occur, nft will print to stdout the monitored events in either XML, JSON or native nft format. +
+
+To filter events related to a concrete object, use one of the keywords 'tables', 'chains', 'sets', 'rules', 'elements', 'ruleset'. +
+
+To filter events related to a concrete action,  use  keyword  'new'  or 'destroy'.
+
+Hit ^C to finish the monitor operation.
+
+.Listen to all events, report in native nft format
+--------------------------------------------------
+% nft monitor
+--------------------------------------------------
+
+.Listen to added tables, report in XML format
+--------------------------------------------
+% nft monitor new tables xml
+--------------------------------------------
+
+.Listen to deleted rules, report in JSON format
+-----------------------------------------------
+% nft monitor destroy rules json
+-----------------------------------------------
+
+.Listen to both new and destroyed chains, in native nft format
+-----------------------------------------------------------------
+% nft monitor chains
+-------------------------------
+
+.Listen to ruleset events such as table, chain, rule, set, counters and quotas, in native nft format
+----------------------------------------------------------------------------------------------------
+% nft monitor ruleset
+---------------------
+
 ERROR REPORTING
 ---------------
 When an error is detected, nft shows the line(s) containing the  error, the position of the erroneous parts in the input stream and marks up the erroneous parts using carets (^). If the error results from the combination of two expressions or statements, the part imposing the constraints which are violated is marked using tildes (~). +
@@ -535,7 +589,6 @@ filter output tcp dport == tcp dport
 filter output oif wlan0
        ^^^^^^^^^^^^^^^^^^^^^^^
 ---------------------------------
-
 
 EXIT STATUS
 -----------
