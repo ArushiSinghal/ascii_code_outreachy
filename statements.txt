@@ -1,0 +1,62 @@
+VERDICT STATEMENT
+~~~~~~~~~~~~~~~~~
+The verdict statement alters control flow in the ruleset and issues policy decisions for packets.
+
+[verse]
+{accept | drop | queue | continue | return}
+{jump | goto} chain
+
+[horizontal]
+accept:: Terminate ruleset evaluation and accept the packet.
+drop:: Terminate ruleset evaluation and drop the packet.
+queue:: Terminate ruleset evaluation and queue the packet to userspace.
+continue:: Continue ruleset evaluation with the next rule. FIXME
+return:: Return from the current chain and continue evaluation at the next rule in the last chain. If issued in a base chain, it is equivalent to *accept*.
+jump 'chain':: Continue evaluation at the first rule in chain.  The current position in the ruleset is pushed to a call stack and evaluation will continue there when the new chain is entirely evaluated of a return verdict is issued.
+goto 'chain':: Similar to jump, but the current position is not pushed to the call stack, meaning that after the new chain evaluation will continue at the last chain instead of the one containing the goto statement.
+
+.Verdict statements
+-------------------
+# process packets from eth0 and the internal network in from_lan
+# chain, drop all packets from eth0 with different source addresses.
+
+filter input iif eth0 ip saddr 192.168.0.0/24 jump from_lan
+filter input iif eth0 drop
+-------------------
+
+PAYLOAD STATEMENT
+~~~~~~~~~~~~~~~~~
+The  payload  statement alters packet content.  It can be used for example to set ip DSCP (differv) header field or ipv6 flow labels.
+
+.route some packets instead of bridging
+---------------------------------------
+# redirect tcp:http from 192.160.0.0/16 to local machine for routing instead of bridging
+# assumes 00:11:22:33:44:55 is local MAC address.
+bridge input meta iif eth0 ip saddr 192.168.0.0/16 tcp dport 80 meta pkttype set unicast ether daddr set 00:11:22:33:44:55
+-------------------------------------------
+
+.Set IPv4 DSCP header field
+---------------------------
+ip forward ip dscp set 42
+---------------------------
+
+EXTENSION HEADER STATEMENT
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+The extension header statement alters packet content in variable-sized headers.  This can currently be used to alter the TCP Maximum segment size of packets, similar to TCPMSS.
+
+.change tcp mss
+---------------
+tcp flags syn tcp option maxseg size set 1360
+# set a size based on route information:
+tcp flags syn tcp option maxseg size set rt mtu
+---------------
+
+LOG STATEMENT
+~~~~~~~~~~~~~
+[verse]
+log [prefix quoted_string] [level syslog-level] [flags log-flags]
+log group nflog_group [prefix quoted_string] [queue-threshold value] [snaplen size]
+
+The log statement enables logging of matching packets. When this statement is used from a rule, the Linux kernel will print some information on all matching packets, such as header fields, via the kernel log (where it can be read with dmesg(1) or read in the syslog). If the group number is specified, the Linux kernel will pass the packet to nfnetlink_log which will multicast the packet through a netlink socket to the specified multicast group. One or more userspace processes may subscribe to the group to  receive the packets, see libnetfilter_queue documentation for details. This is a non-terminating statement, so the rule evaluation continues after the packet is logged.
+
+
