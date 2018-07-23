@@ -529,3 +529,59 @@ ct {state | direction | status | mark | expiration | helper | label | l3proto | 
 ct {original | reply} {l3proto | protocol | proto-src | proto-dst | bytes | packets | avgpkt | zone}
 ct {original | reply} {ip | ip6} {saddr | daddr}
 
+.Conntrack expressions
+[options="header"]
+|==================
+|Keyword| Description | Type
+|state|
+State of the connection |
+ct_state
+|direction|
+Direction of the packet relative to the connection |
+ct_dir
+|status|
+Status of the connection |
+ct_status
+|mark|
+Connection mark |
+mark
+|expiration|
+Connection expiration time |
+time
+|helper|
+Helper associated with the connection|
+string
+|label|
+Connection tracking label  bit  or symbolic  name  defined in connlabel.conf in the nftables include path|
+ct_label
+|l3proto│ 
+Layer 3 protocol of the connection│
+nf_proto
+|saddr|
+Source address of the connection for the given direction |
+ipv4_addr/ipv6_addr
+|daddr|
+Destination address of the connection for the given direction |
+ipv4_addr/ipv6_addr
+|protocol|
+Layer 4 protocol of the connection for the given direction |
+inet_proto
+|proto-src|
+Layer 4 protocol source for the given direction|
+integer (16 bit)
+|proto-dst|
+Layer  4  protocol destination for the given direction |
+|packets|
+packet count seen in the given direction or sum of original and reply |
+integer (64 bit)
+|bytes|
+byte count seen, see description for *packets* keyword |
+integer (64 bit)
+|avgpkt|
+average  bytes per packet, see description for packets keyword |
+integer (64 bit)
+|zone|
+conntrack zone |
+integer (64 bit)
+|==========================================
+A description of conntrack-specific types listed above can be found sub-section CONNTRACK TYPES above.
