@@ -466,9 +466,7 @@ Stateful objects are attached to tables and are identified by an unique name. Th
 *list*:: Display stateful information the object holds.
 *reset*:: List-and-reset stateful object.
 
-include::sfo-ct.txt[]
-include::sfo-counter.txt[]
-include::sfo-quota.txt[]
+include::stateful-objects.txt[]
 
 EXPRESSIONS
 ------------
@@ -509,17 +507,19 @@ Types may be derived from lower order types, f.i. the IPv4 address type is deriv
 
 In certain contexts (set and map definitions) it is necessary to explicitly specify a data type. Each type has a name which is used for this.
 
+include::data-types.txt[]
+
 PRIMARY EXPRESSIONS
 -------------------
 The  lowest  order expression is a primary expression, representing either a constant or a single datum from a packet's payload, meta data or a stateful module.
+
+include::primary-expression.txt[]
 
 PAYLOAD EXPRESSIONS
 -------------------
 Payload expressions refer to data from the packet's payload.
 
-ADDITIONAL COMMANDS
--------------------
-These are some additional commands included in nft.
+include::payload-expression.txt[]
 
 STATEMENTS
 ----------
@@ -527,6 +527,11 @@ Statements represent actions to be performed. They can alter control flow (retur
 
 Statements  exist in two kinds. Terminal statements unconditionally terminate evaluation of the current rule, non-terminal statements either only conditionally or never terminate evaluation of the current rule, in other words,  they  are  passive from the ruleset evaluation perspective. There can be an arbitrary amount of non-terminal statements in a rule, but only a single terminal statement as the final statement.
 
+include::statements.txt[]
+
+ADDITIONAL COMMANDS
+-------------------
+These are some additional commands included in nft.
 
 MONITOR
 ~~~~~~~~
