@@ -365,17 +365,17 @@ The dup statement is used to duplicate a packet and send the copy to a different
 *dup* to 'address' device '*device*'
 
 .Dup statement values
----------------------
 [options="header"]
 |==================
-│Expression │ Description │ Type
-│address │
+|Expression | Description | Type
+|address |
 Specifies that the copy of the packet should be sent to a new gateway.│
-ipv4_addr, ipv6_addr, e.g. abcd::1234, or you can use a mapping, e.g. ip saddr map { 192.168.1.2 : 10.1.1.1 }
-│device │
-Specifies that the copy should be transmitted via device. │ 
+ipv4_addr, ipv6_addr, e.g. abcd::1234, or you can use a mapping. e.g. ip saddr map { 192.168.1.2 : 10.1.1.1 }
+|device |
+Specifies that the copy should be transmitted via device. |
 string
-|==========================
+|===================
+
 
 .Using the dup statement
 ------------------------
