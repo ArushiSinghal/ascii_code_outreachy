@@ -1,0 +1,47 @@
+BOOLEAN TYPE
+~~~~~~~~~~~~
+[options="header"]
+|==================
+|Name | Keyword | Size | Base type
+|Boolean |
+boolean |
+1 bit |
+integer
+|===================
+
+The  boolean type is a syntactical helper type in user space. It's use is in the right-hand side of a (typically implicit) relational expression to change the expression on the left-hand side into a boolean check (usually for existence). +
+
+The following keywords will automatically resolve into a  boolean  type with given value:
+The bitmask type (bitmask) is used for bitmasks.
+
+[options="header"]
+|==================
+|Keyword | Value
+|exits |
+1 |
+missing |
+0
+|===================
+
+.Boolean specification
+----------------------
+[options="header"]
+|==================
+|Expression | Behaviour
+|fib |
+Check route existence.
+|exthdr |
+Check IPv6 extension header existence.
+|tcp option |
+Check  TCP  option  header existence.
+|===================
+
+# match if route exists
+filter input fib daddr . iif oif exists
+
+# match only non-fragmented packets in IPv6 traffic
+filter input exthdr frag missing
+
+# match if TCP timestamp option is present
+filter input tcp option timestamp exists
+------------------------------------------
