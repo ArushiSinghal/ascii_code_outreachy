@@ -76,7 +76,7 @@ unsigned integer (16 bit)
 Length of packet payload to include in netlink messages |
 unsigned integer (32 bit)
 |queue-threshold|
-Number  of packets to queue inside the kernel before sending them to userpace
+Number  of packets to queue inside the kernel before sending them to userpace |
 unsigned integer (32 bit)
 |==================================
 
@@ -342,7 +342,9 @@ unsigned integer (16 bit)
 Sets  initial  queue in the range, if fanout is used. │
 unsigned integer (16 bit)
 │queue_number_to │
-Sets closing queue in  the  range, if fanout is used. │ unsigned integer (16 bit) │
+Sets closing queue in  the  range, if fanout is used. │
+unsigned integer (16 bit)
+│=====================
        
 .queue statement flags
 -----------------------
@@ -350,7 +352,7 @@ Sets closing queue in  the  range, if fanout is used. │ unsigned integer (16 b
 |==================
 │Flag   │ Description
 │bypass │
-Let  packets go through if userspace application cannot back off. Before using this flag, read libnetfilter_queue  documentation  for performance tuning recommendations.
+Let  packets go through if userspace application cannot back off. Before using this flag, read libnetfilter_queue documentation for performance tuning recommendations.
 │fanout │
 Distribute packets between several queues.
 |===============================
