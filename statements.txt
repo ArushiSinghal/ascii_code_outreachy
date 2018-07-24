@@ -86,15 +86,15 @@ unsigned integer (32 bit)
 | Flag | Description
 |tcp sequence|
 Log TCP sequence numbers.
-│tcp options│
+|tcp options|
 Log options from the TCP packet header.
-│ip options│
+|ip options|
 Log options from the IP/IPv6 packet header.
-│skuid│
+|skuid|
 Log the userid of the process which generated the packet.
-│ether| 
+|ether|
 Decode MAC addresses and protocol.
-│all│ 
+|all|
 Enable all log flags listed above.
 |==============================
 
@@ -121,15 +121,15 @@ A reject statement is used to send back an error packet in response to the match
 .different ICMP reject variants are meant for use in different table families
 [options="header"]
 |==================
-│Variant │ Family │ Type
-│icmp│
-ip│ 
+|Variant |Family | Type
+|icmp|
+ip|
 icmp_code
-│icmpv6 │
-ip6│ 
+|icmpv6|
+ip6|
 icmpv6_code
-│icmpx│
-inet│
+|icmpx|
+inet|
 icmpx_code
 |==================
 
@@ -163,14 +163,14 @@ bitmask, integer (32 bit)
 |helper|
 name of ct helper object to assign to the connection |
 quoted string
-|mark│
-Connection tracking mark │
+|mark|
+Connection tracking mark |
 mark
-|label│
-Connection tracking label│ 
+|label|
+Connection tracking label|
 label
-|zone│
-conntrack zone│
+|zone|
+conntrack zone|
 integer (16 bit)
 |==================
 
@@ -180,6 +180,7 @@ ct mark set meta mark
 --------------------------------
 
 .set zone mapped via interface
+------------------------------
 table inet raw {
   chain prerouting {
       type filter hook prerouting priority -300;
@@ -209,17 +210,17 @@ A meta statement sets meta data associated with a packet. +
 [options="header"]
 |==================
 |Keyword| Description| Value
-│priority │
-TC packet priority│
+|priority |
+TC packet priority|
 tc_handle
-│mark │
-Packet mark │
+|mark|
+Packet mark |
 mark
-│pkttype │
-packet type │
+|pkttype |
+packet type |
 pkt_type
-│nftrace │
-ruleset packet tracing on/off. Use monitor trace command to watch traces│
+|nftrace |
+ruleset packet tracing on/off. Use monitor trace command to watch traces|
 0, 1
 |==========================
 
@@ -234,12 +235,12 @@ A limit statement matches at a limited rate using a token bucket filter. A rule 
 .limit statement values
 [options="header"]
 |==================
-│Value │ Description │ Type|
-│packet_number │
-Number of packets │ 
-unsigned integer (32 bit) 
-│byte_number │
-Number of bytes │ 
+|Value | Description | Type|
+|packet_number |
+Number of packets |
+unsigned integer (32 bit)
+|byte_number |
+Number of bytes |
 unsigned integer (32 bit)
 |========================
 
@@ -281,10 +282,10 @@ port number (16 bits)
 [options="header"]
 |==================
 |Flag| Description
-│persistent │
+|persistent |
 Gives a client the same source-/destination-address for each connection.
 |random|
-If used then port mapping will be randomized using a random seeded MD5 hash mix using source and destination address and destination port. 
+If used then port mapping will be randomized using a random seeded MD5 hash mix using source and destination address and destination port.
 |fully-random|
 If  used then port mapping is generated based on a 32-bit pseudo-random algorithm.
 |=============================
@@ -328,25 +329,25 @@ This statement passes the packet to userspace using the nfnetlink_queue handler.
 .queue statement values
 [options="header"]
 |==================
-│Value │ Description │ Type
-│queue_number │
-Sets queue number, default is 0. │
+|Value | Description | Type
+|queue_number |
+Sets queue number, default is 0. |
 unsigned integer (16 bit)
-│queue_number_from │
-Sets  initial  queue in the range, if fanout is used. │
+|queue_number_from |
+Sets  initial  queue in the range, if fanout is used. |
 unsigned integer (16 bit)
-│queue_number_to │
-Sets closing queue in  the  range, if fanout is used. │
+|queue_number_to |
+Sets closing queue in  the  range, if fanout is used. |
 unsigned integer (16 bit)
-│=====================
-       
+|=====================
+
 .queue statement flags
 [options="header"]
 |==================
-│Flag   │ Description
-│bypass │
+|Flag   | Description
+|bypass |
 Let  packets go through if userspace application cannot back off. Before using this flag, read libnetfilter_queue documentation for performance tuning recommendations.
-│fanout │
+|fanout |
 Distribute packets between several queues.
 |===============================
 
@@ -362,7 +363,7 @@ The dup statement is used to duplicate a packet and send the copy to a different
 |==================
 |Expression | Description | Type
 |address |
-Specifies that the copy of the packet should be sent to a new gateway.│
+Specifies that the copy of the packet should be sent to a new gateway.|
 ipv4_addr, ipv6_addr, e.g. abcd::1234, or you can use a mapping. e.g. ip saddr map { 192.168.1.2 : 10.1.1.1 }
 |device |
 Specifies that the copy should be transmitted via device. |
