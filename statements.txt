@@ -4,16 +4,16 @@ The verdict statement alters control flow in the ruleset and issues policy decis
 
 [verse]
 {accept | drop | queue | continue | return}
-{jump | goto} chain
+{jump | goto} 'chain'
 
 [horizontal]
-accept:: Terminate ruleset evaluation and accept the packet.
-drop:: Terminate ruleset evaluation and drop the packet.
-queue:: Terminate ruleset evaluation and queue the packet to userspace.
-continue:: Continue ruleset evaluation with the next rule. FIXME
-return:: Return from the current chain and continue evaluation at the next rule in the last chain. If issued in a base chain, it is equivalent to *accept*.
-jump 'chain':: Continue evaluation at the first rule in chain.  The current position in the ruleset is pushed to a call stack and evaluation will continue there when the new chain is entirely evaluated of a return verdict is issued.
-goto 'chain':: Similar to jump, but the current position is not pushed to the call stack, meaning that after the new chain evaluation will continue at the last chain instead of the one containing the goto statement.
+*accept*:: Terminate ruleset evaluation and accept the packet.
+*drop*:: Terminate ruleset evaluation and drop the packet.
+*queue*:: Terminate ruleset evaluation and queue the packet to userspace.
+*continue*:: Continue ruleset evaluation with the next rule. FIXME
+*return*:: Return from the current chain and continue evaluation at the next rule in the last chain. If issued in a base chain, it is equivalent to *accept*.
+*jump* 'chain':: Continue evaluation at the first rule in 'chain'.  The current position in the ruleset is pushed to a call stack and evaluation will continue there when the new chain is entirely evaluated of a *return* verdict is issued.
+*goto* 'chain':: Similar to *jump*, but the current position is not pushed to the call stack, meaning that after the new chain evaluation will continue at the last chain instead of the one containing the goto statement.
 
 .Verdict statements
 -------------------
@@ -149,7 +149,7 @@ CONNTRACK STATEMENT
 The conntrack statement can be used to set the conntrack mark and conntrack labels.
 
 [verse]
-ct {mark | event | label | zone} set 'value'
+*ct* {mark | event | label | zone} set 'value'
 
 The  ct  statement  sets  meta data associated with a connection.  The zone id has to be assigned before a conntrack lookup takes place, i.e. this has to be done in prerouting and possibly output (if locally generated packets need to be placed in a distinct zone), with a hook priority of -300.
 
@@ -247,18 +247,18 @@ unsigned integer (32 bit)
 NAT STATEMENTS
 ~~~~~~~~~~~~~~
 [verse]
-snat to address [:port] [persistent, random, fully-random]
-snat to address - address [:port - port] [persistent, random, fully-random]
-dnat to address [:port] [persistent, random, fully-random]
-dnat to address [:port - port] [persistent, random, fully-random]
-masquerade to [:port] [persistent, random, fully-random]
-masquerade to [:port - port] [persistent, random, fully-random]
-redirect to [:port] [persistent, random, fully-random]
-redirect to [:port - port] [persistent, random, fully-random]
+*snat* to address [:port] [persistent, random, fully-random]
+*snat* to address - address [:port - port] [persistent, random, fully-random]
+*dnat* to address [:port] [persistent, random, fully-random]
+*dnat* to address [:port - port] [persistent, random, fully-random]
+*masquerade* to [:port] [persistent, random, fully-random]
+*masquerade* to [:port - port] [persistent, random, fully-random]
+*redirect* to [:port] [persistent, random, fully-random]
+*redirect* to [:port - port] [persistent, random, fully-random]
 
 The nat statements are only valid from nat chain types. +
 
-The snat and masquerade statements specify that the source address of the packet should be modified. While snat is only valid  in the postrouting and input chains, masquerade makes sense only in postrouting. The dnat and redirect statements are only valid in the prerouting and output chains, they specify that the destination address of the packet should be modified. You  can  use  nonbase  chains which are called from base chains of nat chain type too. All future packets in this connection will also be mangled, and rules should cease being examined.
+The *snat* and *masquerade* statements specify that the source address of the packet should be modified. While *snat* is only valid  in the postrouting and input chains, *masquerade* makes sense only in postrouting. The dnat and redirect statements are only valid in the prerouting and output chains, they specify that the destination address of the packet should be modified. You  can  use  nonbase  chains which are called from base chains of nat chain type too. All future packets in this connection will also be mangled, and rules should cease being examined.
 
 The *masquerade* statement is a special form of snat which always uses the outgoing interface's IP address to translate to. It is particularly useful on gateways with dynamic (public) IP addresses.
 
@@ -355,6 +355,7 @@ DUP STATEMENT
 ~~~~~~~~~~~~~
 The dup statement is used to duplicate a packet and send the copy to a different destination.
 
+[verse]
 *dup* to 'device'
 *dup* to 'address' device '*device*'
 

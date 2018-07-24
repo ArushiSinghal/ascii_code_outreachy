@@ -66,7 +66,7 @@ filter input ether daddr 20:c9:d0:43:12:d9
 ----------------------------
 
 IPV4 ADDRESS TYPE
-~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~
 [options="header"]
 |==================
 |Name | Keyword | Size | Base type
@@ -134,19 +134,31 @@ missing |
 0
 |===================
 
-.Boolean specification
-----------------------
 [options="header"]
-|==================
+|======================================
 |Expression | Behaviour
 |fib |
 Check route existence.
-|exthdr |
+|exthdr|
 Check IPv6 extension header existence.
 |tcp option |
 Check  TCP  option  header existence.
 |===================
 
+.expressions support a boolean comparison:
+[options="header"]
+|======================================
+|Expression | Behaviour
+|fib |
+Check route existence.
+|exthdr|
+Check IPv6 extension header existence.
+|tcp option |
+Check  TCP  option  header existence.
+|===================
+
+.Boolean specification
+----------------------
 # match if route exists
 filter input fib daddr . iif oif exists
 
@@ -198,7 +210,7 @@ The ICMP Type type is used to conveniently specify the ICMP header's type field.
 |info-request|
 15
 |info-reply|
-p16
+16
 |address-mask-request|
 17
 |address-mask-reply|
@@ -320,10 +332,10 @@ integer
 
 The ICMPv6 Code type is used to conveniently specify the  ICMPv6  header's code field.
 
-.keywords may be used when specifying the ICMPv6 code:
+.keywords may be used when specifying the ICMPv6 code
 [options="header"]
 |==================
-|Keyword │Value |
+|Keyword |Value
 |no-route|
 0
 |admin-prohibited|
@@ -354,7 +366,7 @@ The ICMPvX Code type abstraction is a set of values which overlap between ICMP a
 .keywords may be used when specifying the ICMPvX code
 [options="header"]
 |==================
-|Keyword │Value |
+|Keyword |Value
 |no-route|
 0
 |port-unreachable|
@@ -371,7 +383,7 @@ CONNTRACK TYPES
 .overview of types used in ct expression and statement
 [options="header"]
 |==================
-|Name │Keyword |Size |Base type
+|Name | Keyword |Size |Base type
 |conntrack state|
 ct_state|
 4 byte|

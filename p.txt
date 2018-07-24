@@ -80,9 +80,9 @@ INPUT FILE FORMATS
 ------------------
 LEXICAL CONVENTIONS
 ~~~~~~~~~~~~~~~~~~~
-Input is parsed line-wise. When the last character of a line, just before the newline character, is a non-quoted backslash (\), the next line is treated as a continuation. Multiple commands on the same line can be separated using a semicolon (;). + 
+Input is parsed line-wise. When the last character of a line, just before the newline character, is a non-quoted backslash (\), the next line is treated as a continuation. Multiple commands on the same line can be separated using a semicolon (;). +
 
-A hash sign (#) begins a comment. All following characters on the same line are ignored. + 
+A hash sign (#) begins a comment. All following characters on the same line are ignored. +
 
 Identifiers begin with an alphabetic character (a-z,A-Z), followed zero or more alphanumeric characters (a-z,A-Z,0-9) and the characters slash (/), backslash (\), underscore (_) and dot (.). Identifiers using different characters or clashing with a keyword need to be enclosed in double quotes (").
 

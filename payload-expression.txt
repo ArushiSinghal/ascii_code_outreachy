@@ -283,7 +283,7 @@ Checksum|
 integer (16 bit)
 |================
 
-.UDP-LITE HEADER EXPRESSION
+UDP-LITE HEADER EXPRESSION
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 [verse]
 *udplite* ['UDP-Lite' 'header' 'field']
@@ -297,13 +297,13 @@ source port|
 inet_service
 |dport|
 Destination port|
-inet_service 
+inet_service
 |checksum|
 Checksum|
 integer (16 bit)
 |================
 
-.SCTP HEADER EXPRESSION
+SCTP HEADER EXPRESSION
 ~~~~~~~~~~~~~~~~~~~~~~~
 [verse]
 *sctp* ['SCTP' 'header' 'field']
@@ -369,7 +369,7 @@ Sequence number|
 integer (32 bit)
 |========================
 
-.ENCRYPTED SECURITY PAYLOAD HEADER EXPRESSION
+ENCRYPTED SECURITY PAYLOAD HEADER EXPRESSION
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 [verse]
 *esp* ['ESP' 'header' 'field']
@@ -386,7 +386,7 @@ Sequence number|
 integer (32 bit)
 |===========================
 
-.IPCOMP HEADER EXPRESSION
+IPCOMP HEADER EXPRESSION
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 *comp* ['IPComp' 'header' 'field']
 
@@ -438,25 +438,26 @@ EXTENSION HEADER EXPRESSIONS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Extension header expressions refer to data from variable-sized protocol headers, such as IPv6 extension headers and TCP options.
 
-nftables currently supports matching (finding) a given ipv6 extension header or TCP option. +
+nftables currently supports matching (finding) a given ipv6 extension header or TCP option.
+[verse]
+*hbh* {nexthdr | hdrlength}
+*frag* {nexthdr | frag-off | more-fragments | id}
+*rt* {nexthdr | hdrlength | type | seg-left}
+*dst* {nexthdr | hdrlength}
+*mh* {nexthdr | hdrlength | checksum | type}
+*srh* {flags | tag | sid | seg-left}
+*tcp option* {eol | noop | maxseg | window | sack-permitted | sack | sack0 | sack1 | sack2 | sack3 | timestamp} 'tcp_option_field'
 
-hbh {nexthdr | hdrlength}
-frag {nexthdr | frag-off | more-fragments | id}
-rt {nexthdr | hdrlength | type | seg-left}
-dst {nexthdr | hdrlength}
-mh {nexthdr | hdrlength | checksum | type}
-srh {flags | tag | sid | seg-left}
-tcp option {eol | noop | maxseg | window | sack-permitted | sack | sack0 | sack1 | sack2 | sack3 | timestamp} tcp_option_field
-
- The  following  syntaxes are valid only in a relational expression with boolean type on right-hand side for checking header existence only:
-exthdr {hbh | frag | rt | dst | mh}
-tcp option {eol | noop | maxseg | window | sack-permitted | sack | sack0 | sack1 | sack2 | sack3 | timestamp}
+The following syntaxes are valid only in a relational expression with boolean type on right-hand side for checking header existence only:
+[verse]
+*exthdr* {hbh | frag | rt | dst | mh}
+*tcp option* {eol | noop | maxseg | window | sack-permitted | sack | sack0 | sack1 | sack2 | sack3 | timestamp}
 
 .IPv6 extension headers
 [options="header"]
 |==================
 |Keyword| Description
-|hbh| 
+|hbh|
 Hop by Hop
 |rt|
 Routing Header
@@ -487,24 +488,24 @@ kind, length, size
 TCP Window Scaling |
 kind, length, count
 |sack-permitted|
-TCP SACK permitted │ 
+TCP SACK permitted |
 kind, length
-|sack│
+|sack|
 TCP Selective Acknowledgement (alias of block 0) |
 kind, length, left, right
-|sack0│
+|sack0|
 TCP Selective Acknowledgement (block 0) |
 kind, length, left, right
-|sack1│
+|sack1|
 TCP Selective Acknowledgement (block 1) |
 kind, length, left, right
-|sack2│
+|sack2|
 TCP Selective Acknowledgement (block 2) |
 kind, length, left, right
-|sack3│
+|sack3|
 TCP Selective Acknowledgement (block 3) |
 kind, length, left, right
-|timestamp│
+|timestamp|
 TCP Timestamps |
 kind, length, tsval, tsecr
 |============================
@@ -523,12 +524,12 @@ CONNTRACK EXPRESSIONS
 ~~~~~~~~~~~~~~~~~~~~~
 Conntrack expressions refer to meta data of the connection tracking entry associated with a packet. +
 
-There are three types of conntrack expressions. Some conntrack expressions require the flow direction before the conntrack key, others must be used directly because they are direction agnostic.  The packets, bytes and avgpkt keywords can be used with or without a direction. If the direction is omitted, the sum of the original and the reply direction is returned. The same is true for the zone, if a direction is given, the zone is only matched if the zone id is tied to the given direction. +
+There are three types of conntrack expressions. Some conntrack expressions require the flow direction before the conntrack key, others must be used directly because they are direction agnostic.  The *packets*, *bytes* and *avgpkt* keywords can be used with or without a direction. If the direction is omitted, the sum of the original and the reply direction is returned. The same is true for the *zone*, if a direction is given, the zone is only matched if the zone id is tied to the given direction. +
 
 [verse]
-ct {state | direction | status | mark | expiration | helper | label | l3proto | protocol | bytes | packets | avgpkt | zone}
-ct {original | reply} {l3proto | protocol | proto-src | proto-dst | bytes | packets | avgpkt | zone}
-ct {original | reply} {ip | ip6} {saddr | daddr}
+*ct* {state | direction | status | mark | expiration | helper | label | l3proto | protocol | bytes | packets | avgpkt | zone}
+*ct* {original | reply} {l3proto | protocol | proto-src | proto-dst | bytes | packets | avgpkt | zone}
+*ct* {original | reply} {ip | ip6} {saddr | daddr}
 
 .Conntrack expressions
 [options="header"]
@@ -555,8 +556,8 @@ string
 |label|
 Connection tracking label  bit  or symbolic  name  defined in connlabel.conf in the nftables include path|
 ct_label
-|l3proto│ 
-Layer 3 protocol of the connection│
+|l3proto|
+Layer 3 protocol of the connection|
 nf_proto
 |saddr|
 Source address of the connection for the given direction |
