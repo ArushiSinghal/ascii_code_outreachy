@@ -235,7 +235,7 @@ A limit statement matches at a limited rate using a token bucket filter. A rule 
 .limit statement values
 [options="header"]
 |==================
-|Value | Description | Type
+|Value | Description | Type|
 |packet_number |
 Number of packets |
 unsigned integer (32 bit)

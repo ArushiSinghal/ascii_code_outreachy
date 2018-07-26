@@ -41,11 +41,6 @@ EtherType|
 ether_type
 |==================
 
-ARP HEADER EXPRESSION
-~~~~~~~~~~~~~~~~~~~~~
-[verse]
-*arp* ['ARP' 'header' 'field']
-
 .ARP HEADER EXPRESSION
 [options="header"]
 |==================
@@ -590,6 +585,6 @@ average  bytes per packet, see description for packets keyword |
 integer (64 bit)
 |zone|
 conntrack zone |
-integer (16 bit)
+integer (64 bit)
 |==========================================
 A description of conntrack-specific types listed above can be found sub-section CONNTRACK TYPES above.

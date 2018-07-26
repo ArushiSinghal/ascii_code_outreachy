@@ -387,7 +387,7 @@ CONNTRACK TYPES
 |conntrack state|
 ct_state|
 4 byte|
-bitmask
+bitmask 
 |conntrack direction|
 ct_dir |
 8 bit|
@@ -441,7 +441,7 @@ For each of the types above, keywords are available for convenience:
 |expected|
 1
 |seen-reply|
-2
+1
 |assured|
 4
 |confirmed|
